@@ -29,7 +29,7 @@ module MysqlBackup
         end
         databases = databases - skip #['mysql', 'test', 'information_schema']
 
-        p "=== MySQL Back #{Date.today.strftime('%y-%m-%d %H:%M')} ==="
+        p "=== MySQL Back #{Time.now.strftime('%y-%m-%d %H:%M')} ==="
         p "Destination dir: #{dir}"
 
         databases.each do |db|

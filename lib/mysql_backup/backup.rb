@@ -29,8 +29,11 @@ module MysqlBackup
         end
         databases = databases - skip #['mysql', 'test', 'information_schema']
 
+        p "=== MySQL Back #{Date.today.strftime('%y-%m-%d %H:%M')} ==="
+        p "Destination dir: #{dir}"
+
         databases.each do |db|
-          raise "The backup directory '#{dir}' doesn't exist" if !File.exist?(dir)
+          raise "Failure: The backup directory '#{dir}' doesn't exist" if !File.exist?(dir)
 
           file = File.join(dir, "#{db}_#{timestamp}.sql")
           p "Backing up #{db.ljust(40)} > #{file}"
@@ -44,11 +47,11 @@ module MysqlBackup
       
           # Find all backups and sort
           # TODO improve this gem
-          all_backups = Dir.entries(dir).select{|f| f =~ /^#{db}/}.select{|f| File.file? File.join(dir, f) }.sort_by { |f| File.mtime(File.join(dir,f)) }.reverse
+          all_backups = Dir.entries(dir).select{|f| f =~ /^#{db}_.{#{timestamp.length}}\.sql\.gz/}.select{|f| File.file? File.join(dir, f) }.sort_by { |f| File.mtime(File.join(dir,f)) }.reverse
 
           #pp all_backups
 
-          keep_backups = all_backups[0..keep] # eg. 10 latest
+          keep_backups = all_backups[0..(keep-1)] # eg. 10 latest
 
           remove = all_backups - keep_backups
 

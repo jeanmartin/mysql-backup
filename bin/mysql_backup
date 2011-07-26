@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
+require 'json'
 require 'mysql_backup'
 
 MysqlBackup.run

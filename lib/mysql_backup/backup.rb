@@ -54,7 +54,7 @@ module MysqlBackup
 
           remove.each do |file|
             puts "Removing backup '#{file}' keeping #{keep}"
-            FileUtils.rm_rf(file)
+            FileUtils.rm_rf(File.join(dir,file))
           end
         end
 
